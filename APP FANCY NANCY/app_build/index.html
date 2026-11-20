@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎀</text></svg>" />
+  <title>Très Chic Thrift | Fancy Nancy Head-to-Toe Outfit Reference</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,400;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            fancy: {
+              pink: '#FF4D8D',
+              rose: '#FF85A1',
+              blush: '#FFF0F5',
+              lavender: '#A855F7',
+              lilac: '#E9D5FF',
+              gold: '#D97706',
+              gilded: '#FBBF24',
+              cream: '#FFFBEB',
+              berry: '#831843',
+              mint: '#10B981',
+              teal: '#0D9488'
+            }
+          },
+          fontFamily: {
+            serif: ['"Playfair Display"', 'Georgia', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+            cursive: ['"Caveat"', 'cursive']
+          },
+          boxShadow: {
+            'fancy': '0 10px 30px -5px rgba(255, 77, 141, 0.3)',
+            'fancy-gold': '0 10px 30px -5px rgba(217, 119, 6, 0.25)',
+            'vintage': '0 8px 24px -4px rgba(131, 24, 67, 0.15)'
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- React 18 & ReactDOM -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+
+  <!-- Babel Standalone for JSX -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.4/dist/confetti.browser.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    }
+    h1, h2, h3, .font-serif {
+      font-family: 'Playfair Display', Georgia, serif;
+    }
+    .font-fancy {
+      font-family: 'Caveat', cursive;
+    }
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #FFF0F5;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #FF85A1;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #FF4D8D;
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-rose-50/60 via-[#FFF9FA] to-purple-50/60 text-slate-800 antialiased min-h-screen selection:bg-pink-500 selection:text-white">
+
+  <div id="root"></div>
+
+  <!-- React App Code -->
+  <script type="text/babel">
+    const { useState, useEffect, useMemo } = React;
+
+    // --- DATA ---
+    const THRIFT_CATEGORIES = [
+      { id: 'head', label: '1. Head & Hair', icon: '👑', desc: 'Topi baret, tiara, fascinator & pita rambut' },
+      { id: 'faceJewelry', label: '2. Face & Jewelry', icon: '✨', desc: 'Kacamata unik, kalung mutiara, anting chandelier' },
+      { id: 'upperBody', label: '3. Upper Body & Layer', icon: '👗', desc: 'Blus renda ruffle, rompi korset, jaket velvet' },
+      { id: 'handBag', label: '4. Hands & Bags', icon: '👜', desc: 'Tas manik kiss-lock, sarung tangan renda' },
+      { id: 'lowerBody', label: '5. Lower Body', icon: '💃', desc: 'Rok tutu bertumpuk, rok lipit metalik, celana jacquard' },
+      { id: 'footwear', label: '6. Footwear & Hosiery', icon: '👠', desc: 'Kaos kaki renda, Mary Janes, kitten heels' }
+    ];
+
+    const THRIFT_ITEMS = [
+      // 1. HEAD & HAIR
+      {
+        id: 'head-1',
+        category: 'head',
+        name: 'Vintage French Wool Beret (Fuchsia Pink)',
+        price: 35000,
+        priceRange: 'Rp 30.000 - Rp 45.000',
+        thriftSearchKeywords: 'topi baret wol vintage, beret hat preloved jepang/korea',
+        materialTip: 'Pastikan bahan wool masih padat dan tidak berlubang (moth holes). Cuci dry clean atau rendam air dingin.',
+        aesthetic: 'Parisian Chic',
+        color: '#FF1493',
+        image: 'https://images.unsplash.com/photo-1576871337622-98d48d1cf531?auto=format&fit=crop&w=600&q=80',
+        fancyNancyFact: 'Nancy menyukai beret karena terdengar sangat très élégant!'
+      },
+      {
+        id: 'head-2',
+        category: 'head',
+        name: 'Pearled Tiara Headband & Organza Bow',
+        price: 25000,
+        priceRange: 'Rp 20.000 - Rp 35.000',
+        thriftSearchKeywords: 'bando mutiara pengantin preloved, headpiece tiara pesta second',
+        materialTip: 'Cek apakah kawat bando masih kokoh dan butiran faux pearl tidak ada yang rontok.',
+        aesthetic: 'Royal Whimsy',
+        color: '#FDF4FF',
+        image: 'https://images.unsplash.com/photo-1535295972055-1c762f4483e5?auto=format&fit=crop&w=600&q=80',
+        fancyNancyFact: 'Tiara membuat hari biasa seketika berubah menjadi resepsi istana.'
+      },
+      {
+        id: 'head-3',
+        category: 'head',
+        name: '90s Floral Silk Bandana / Scarf',
+        price: 20000,
+        priceRange: 'Rp 15.000 - Rp 30.000',
+        thriftSearchKeywords: 'scarf sutra vintage motif bunga, syal leher satin thrift bandung',
+        materialTip: 'Tes kelembutan bahan sutra/satin. Hindari jika jahitan tepi (rolled hem) sudah terurai.',
+        aesthetic: 'Retro Glamour',
+        color: '#F472B6',
+        image: 'https://images.unsplash.com/photo-1601924994987-69e26d50dc26?auto=format&fit=crop&w=600&q=80',
+        fancyNancyFact: 'Bisa diikat di kepala ala diva bioskop klasik era 1950-an!'
+      },
+      {
+        id: 'head-4',
+        category: 'head',
+        name: 'Vintage Feather & Net Fascinator Hat',
+        price: 45000,
+        priceRange: 'Rp 40.000 - Rp 60.000',
+        thriftSearchKeywords: 'fascinator hat jaring bulu, topi pesta vintage inggris preloved',
+        materialTip: 'Periksa kebersihan bulu halus dan pastikan jaring penutup wajah tidak robek.',
+        aesthetic: 'Victorian Tea Party',
+        color: '#C084FC',
+        image: 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=600&q=80',
+        fancyNancyFact: 'Fascinator adalah aksesoris wajib saat pesta minum teh bersama bangsawan.'
+      },
+
+      // 2. FACE & JEWELRY
+      {
+        id: 'jewelry-1',
+        category: 'faceJewelry',
+        name: 'Multi-Strand Faux Pearl Collar Choker',
+        price: 30000,
+        priceRange: 'Rp 25.000 - Rp 45.000',
+        thriftSearchKeywords: 'kalung mutiara tumpuk vintage, pearl choker thrift monza',
+        materialTip: 'Periksa apakah pengait (clasp) masih mengunci dengan rapat dan mutiara tidak pudar.',
+        aesthetic: 'Parisian Chic',
+        color: '#FFFBEB',
+        image: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=600&q=80',
+        fancyNancyFact: 'Prinsip Nancy: mutiara tidak pernah cukup cuma satu helai!'
+      },
+      {
+        id: 'jewelry-2',
+        category: 'faceJewelry',
+        name: 'Vintage Cat-Eye Sunglasses (Glitter Frame)',
+        price: 40000,
+        priceRange: 'Rp 35.000 - Rp 50.000',
+        thriftSearchKeywords: 'kacamata cat eye vintage, kacamata retro frame tebal wanita thrift',
+        materialTip: 'Cek engsel baut kacamata jangan sampai dol atau kendor parah.',
+        aesthetic: 'Diva Extravaganza',
+        color: '#EC4899',
+        image: 'https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=600&q=80',
+        fancyNancyFact: 'Kacamata ini memberi aura selebriti papan atas yang sedang menyamar.'
+      },
+      {
+        id: 'jewelry-3',
+        category: 'faceJewelry',
+        name: 'Antique Gold Baroque Cameo Brooch & Earrings',
+        price: 35000,
+        priceRange: 'Rp 30.000 - Rp 50.000',
+        thriftSearchKeywords: 'bros cameo antik kuningan, anting kristal chandelier vintage',
+        materialTip: 'Cari yang bermaterial kuningan atau pewter agar awet. Bersihkan dengan lap kain halus.',
+        aesthetic: 'Victorian Tea Party',
+        color: '#D97706',
+        image: 'https://images.unsplash.com/photo-1630019852942-f89202989a59?auto=format&fit=crop&w=600&q=80',
+        fancyNancyFact: 'Bros cameo antik ini terlihat seperti warisan bangsawan kerajaan Prancis.'
+      },
+      {
+        id: 'jewelry-4',
+        category: 'faceJewelry',
+        name: 'Y2K Chunky Heart Charm Layered Necklace',
+        price: 25000,
+        priceRange: 'Rp 20.000 - Rp 35.000',
+        thriftSearchKeywords: 'kalung rantai tebal y2k, liontin hati puffy thrift aksesoris',
+        materialTip: 'Pastikan rantai tidak karatan dan lapisi kutek bening jika bahan alloy mudah menghitam.',
+        aesthetic: 'Y2K Glitz',
+        color: '#F43F5E',
+        image: 'https://images.unsplash.com/photo-1611591475879-1144a9e5fa4e?auto=format&fit=crop&w=600&q=80',
+        fancyNancyFact: 'Berdenting ceria setiap kali kamu melangkah penuh pesona.'
+      },
+
+      // 3. UPPER BODY & LAYERS
+      {
+        id: 'top-1',
+        category: 'upperBody',
+        name: 'Victorian High-Neck Ruffle Blouse (Cream Lace)',
+        price: 55000,
+        priceRange: 'Rp 45.000 - Rp 75.000',
+        thriftSearchKeywords: 'blus ruffle renda victoria, kemeja kerut leher vintage thrift korea',
+        materialTip: 'Periksa lingkar leher dan ketiak dari noda kuning. Pastikan kancing kerang masih lengkap.',
+        aesthetic: 'Victorian Whimsy',
+        color: '#FEF3C7',
+        image: 'https://images.unsplash.com/photo-1564257631407-4deb1f99d992?auto=format&fit=crop&w=600&q=80',
+        fancyNancyFact: 'Ruffle renda bertingkat adalah perwujudan kemewahan sejati.'
+      },
+      {
+        id: 'top-2',
+        category: 'upperBody',
+        name: 'Organza Puff-Sleeve Fairy Blouse (Lavender)',
+        price: 65000,
+        priceRange: 'Rp 50.000 - Rp 85.000',
+        thriftSearchKeywords: 'atasan organza lengan balon, puff sleeve blouse pastel thrift',
+        materialTip: 'Bahan organza rawan robek di sambungan bahu, periksa jahitan obras dalamnya.',
+        aesthetic: 'Royal Whimsy',
+        color: '#D8B4FE',
+        image: 'https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?auto=format&fit=crop&w=600&q=80',
+        fancyNancyFact: 'Lengan balon sebesar awan permen kapas membuat postur tubuh terlihat megah.'
+      },
+      {
+        id: 'top-3',
+        category: 'upperBody',
+        name: 'Vintage Floral Brocade Corset Vest',
+        price: 75000,
+        priceRange: 'Rp 65.000 - Rp 95.000',
+        thriftSearchKeywords: 'rompi korset brokat tapestri, vintage tapestry vest tali pita thrift',
+        materialTip: 'Pastikan boning/tulang korset tidak patah atau menusuk keluar kain.',
+        aesthetic: 'Parisian Chic',
+        color: '#BE185D',
+        image: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=600&q=80',
+        fancyNancyFact: 'Tapestri bermotif mawar ini cocok untuk jalan-jalan ke taman kastil.'
+      },
+      {
+        id: 'top-4',
+        category: 'upperBody',
+        name: 'Pastel Cardigan with Faux Fur Collar & Pearl Buttons',
+        price: 85000,
+        priceRange: 'Rp 70.000 - Rp 110.000',
+        thriftSearchKeywords: 'cardigan bulu leher vintage, rajut kancing mutiara thrift jepang',
+        materialTip: 'Cek apakah bulu leher bisa dilepas-pasang dan rajutan tidak melar di pergelangan.',
+        aesthetic: 'Diva Extravaganza',
+        color: '#FBCFE8',
+        image: 'https://images.unsplash.com/photo-1434389677669-e08b4cac3105?auto=format&fit=crop&w=600&q=80',
+        fancyNancyFact: 'Bulu leher halus memberi sentuhan diva Hollywood era klasik.'
+      },
+
+      // 4. HANDS & BAGS
+      {
+        id: 'bag-1',
+        category: 'handBag',
+        name: 'Vintage Beaded Kiss-Lock Evening Purse',
+        price: 45000,
+        priceRange: 'Rp 35.000 - Rp 60.000',
+        thriftSearchKeywords: 'tas manik pesta kisslock vintage, beaded clutch retro thrift pasar senen',
+        materialTip: 'Goyangkan perlahan untuk memastikan rajutan manik-manik tidak rontok.',
+        aesthetic: 'Parisian Chic',
+        color: '#FDE047',
+        image: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=600&q=80',
+        fancyNancyFact: 'Bunyi klik dari pengait kiss-lock adalah suara paling memuaskan di dunia.'
+      },
+      {
+        id: 'bag-2',
+        category: 'handBag',
+        name: 'Sheer White Lace Opera Wrist Gloves',
+        price: 20000,
+        priceRange: 'Rp 15.000 - Rp 30.000',
+        thriftSearchKeywords: 'sarung tangan renda putih pendek, lace gloves vintage thrift',
+        materialTip: 'Pastikan karet pergelangan tangan masih lentur dan renda tidak ada yang tercabut.',
+        aesthetic: 'Victorian Tea Party',
+        color: '#FFFFFF',
+        image: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=600&q=80',
+        fancyNancyFact: 'Cara paling anggun untuk melambaikan tangan kepada para penggemar!'
+      },
+      {
+        id: 'bag-3',
+        category: 'handBag',
+        name: 'Woven Wicker Picnic Basket Bag with Silk Bow',
+        price: 50000,
+        priceRange: 'Rp 40.000 - Rp 70.000',
+        thriftSearchKeywords: 'tas rotan vintage anyaman, picnic basket bag pita satin thrift',
+        materialTip: 'Periksa apakah anyaman rotan ada yang patah tajam atau berjamur.',
+        aesthetic: 'Garden Party',
+        color: '#FBBF24',
+        image: 'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=600&q=80',
+        fancyNancyFact: 'Cukup untuk membawa cermin kecil, pita cadangan, dan permen rasa raspberry.'
+      },
+      {
+        id: 'bag-4',
+        category: 'handBag',
+        name: '90s Metallic Mesh Chain Crossbody',
+        price: 55000,
+        priceRange: 'Rp 45.000 - Rp 75.000',
+        thriftSearchKeywords: 'tas jaring metalik vintage 90s, metal mesh bag chain thrift',
+        materialTip: 'Cek cincin sambungan metal mesh jangan sampai renggang atau sobek.',
+        aesthetic: 'Y2K Glitz',
+        color: '#E5E7EB',
+        image: 'https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?auto=format&fit=crop&w=600&q=80',
+        fancyNancyFact: 'Berkilau indah di bawah sinar lampu diskotik atau matahari sore.'
+      },
+
+      // 5. LOWER BODY
+      {
+        id: 'bottom-1',
+        category: 'lowerBody',
+        name: 'Multi-Tiered Voluminous Tulle Tutu Skirt (Hot Pink)',
+        price: 65000,
+        priceRange: 'Rp 50.000 - Rp 85.000',
+        thriftSearchKeywords: 'rok tutu bertumpuk fuchsia, tulle skirt tumpuk panjang thrift bali',
+        materialTip: 'Pastikan furing dalam tidak robek dan karet pinggang elastis masih kencang.',
+        aesthetic: 'Royal Whimsy',
+        color: '#EC4899',
+        image: 'https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?auto=format&fit=crop&w=600&q=80',
+        fancyNancyFact: 'Jika gaun tidak mekar saat kamu berputar, itu belum cukup fancy!'
+      },
+      {
+        id: 'bottom-2',
+        category: 'lowerBody',
+        name: 'Pleated Metallic Champagne Gold Midi Skirt',
+        price: 60000,
+        priceRange: 'Rp 45.000 - Rp 80.000',
+        thriftSearchKeywords: 'rok plisket metalik emas vintage, accordion pleated midi skirt thrift',
+        materialTip: 'Periksa lipatan plisket apakah masih tajam dan tidak hilang akibat salah setrika.',
+        aesthetic: 'Parisian Chic',
+        color: '#F59E0B',
+        image: 'https://images.unsplash.com/photo-1525507119028-ed4c629a60a3?auto=format&fit=crop&w=600&q=80',
+        fancyNancyFact: 'Menangkap cahaya emas dengan sangat dramatis di setiap langkah.'
+      },
+      {
+        id: 'bottom-3',
+        category: 'lowerBody',
+        name: 'Vintage Floral Jacquard High-Waisted Cigarette Pants',
+        price: 70000,
+        priceRange: 'Rp 55.000 - Rp 90.000',
+        thriftSearchKeywords: 'celana jacquard motif bunga thrift, vintage tapestry trousers wanita',
+        materialTip: 'Periksa resleting samping dan kelonggaran pinggul karena kain jacquard tidak melar.',
+        aesthetic: 'Eccentric Diva',
+        color: '#831843',
+        image: 'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?auto=format&fit=crop&w=600&q=80',
+        fancyNancyFact: 'Celana ala nyonya aristokrat yang gemar berkebun bunga mawar langka.'
+      },
+      {
+        id: 'bottom-4',
+        category: 'lowerBody',
+        name: 'Pastel Lilac Gingham Ruffle Midi Skirt',
+        price: 45000,
+        priceRange: 'Rp 35.000 - Rp 60.000',
+        thriftSearchKeywords: 'rok kotak-kotak pastel ruffle, gingham tiered skirt thrift korea',
+        materialTip: 'Bahan katun mudah dicek, pastikan tidak ada noda pudar di lipatan kain.',
+        aesthetic: 'Garden Party',
+        color: '#C084FC',
+        image: 'https://images.unsplash.com/photo-1577900232427-18219b9166a0?auto=format&fit=crop&w=600&q=80',
+        fancyNancyFact: 'Sangat cocok dipadukan saat menggelar selimut piknik di atas rumput hijau.'
+      },
+
+      // 6. FOOTWEAR & HOSIERY
+      {
+        id: 'shoes-1',
+        category: 'footwear',
+        name: 'Frill Ruffle Lace Ankle Socks & Glossy Mary Janes',
+        price: 85000,
+        priceRange: 'Rp 70.000 - Rp 120.000',
+        thriftSearchKeywords: 'sepatu mary jane platform glossy, kaos kaki renda ruffle jepang',
+        materialTip: 'Periksa lem sol bawah sepatu Mary Jane dan pastikan tali strap tidak retak.',
+        aesthetic: 'Royal Whimsy',
+        color: '#BE185D',
+        image: 'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=600&q=80',
+        fancyNancyFact: 'Sepatu Mary Jane merah ceri adalah ciri khas Nancy untuk melangkah riang.'
+      },
+      {
+        id: 'shoes-2',
+        category: 'footwear',
+        name: 'Pointed Velvet Kitten-Heel Mules (Lavender Bow)',
+        price: 90000,
+        priceRange: 'Rp 75.000 - Rp 130.000',
+        thriftSearchKeywords: 'mules velvet kitten heel, sepatu selop pita vintage thrift batam',
+        materialTip: 'Periksa tapak tumit kitten heel apakah perlu diganti di tukang sol.',
+        aesthetic: 'Parisian Chic',
+        color: '#A855F7',
+        image: 'https://images.unsplash.com/photo-1535043934128-cf0b28d52f95?auto=format&fit=crop&w=600&q=80',
+        fancyNancyFact: 'Tinggi hak yang pas untuk tetap anggun tanpa membuat kaki pegal berlebihan.'
+      },
+      {
+        id: 'shoes-3',
+        category: 'footwear',
+        name: 'Polka-Dot Sheer Tights with Retro Two-Tone Brogues',
+        price: 75000,
+        priceRange: 'Rp 60.000 - Rp 100.000',
+        thriftSearchKeywords: 'sepatu oxford vintage wanita thrift, stocking polkadot transparan',
+        materialTip: 'Cek kondisi kulit sepatu oxford apakah butuh semir ulang dan solnya masih tebal.',
+        aesthetic: 'Victorian Tea Party',
+        color: '#1E293B',
+        image: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=600&q=80',
+        fancyNancyFact: 'Kombinasi polkadot dan brogues vintage menciptakan gaya quirky nan akademis.'
+      },
+      {
+        id: 'shoes-4',
+        category: 'footwear',
+        name: 'Metallic Rose Gold Ankle Boots',
+        price: 110000,
+        priceRange: 'Rp 85.000 - Rp 150.000',
+        thriftSearchKeywords: 'boots metalik emas/pink thrift pasar senen, ankle boots pesta second',
+        materialTip: 'Cek bagian lekukan depan jangan sampai kulit sintetis mengelupas (peeling).',
+        aesthetic: 'Y2K Glitz',
+        color: '#FB7185',
+        image: 'https://images.unsplash.com/photo-1520639888713-7851133b1ed0?auto=format&fit=crop&w=600&q=80',
+        fancyNancyFact: 'Sepatu boots ini membuat setiap trotoar jalanan serasa karpet merah Paris Fashion Week.'
+      }
+    ];
+
+    const CURATED_LOOKBOOKS = [
+      {
+        id: 'look-1',
+        title: 'The Parisian Bonjour Chic',
+        tagline: 'Très romantique! Gaya gadis kafe Paris dengan sentuhan emas dan mutiara.',
+        vibe: 'Parisian Chic',
+        dominantColors: ['#FF1493', '#F59E0B', '#FFFBEB'],
+        description: 'Paduan baret wol fuchsia, kalung mutiara klasik tumpuk, atasan korset tapestri mawar di atas rok plisket emas.',
+        badge: 'Editor’s Pick',
+        items: { head: 'head-1', faceJewelry: 'jewelry-1', upperBody: 'top-3', handBag: 'bag-1', lowerBody: 'bottom-2', footwear: 'shoes-2' }
+      },
+      {
+        id: 'look-2',
+        title: 'Royal Whimsy Tutu Extravaganza',
+        tagline: 'Gaun pesta peri penuh pita, mahkota bando, dan rok tutu bertingkat mekar.',
+        vibe: 'Royal Whimsy',
+        dominantColors: ['#EC4899', '#D8B4FE', '#BE185D'],
+        description: 'Mahkota bando mutiara berpadu dengan blus balon organza dan rok tutu fuchsia mekar. Dilengkapi sepatu Mary Jane merah ceri khas Fancy Nancy!',
+        badge: 'Signature Nancy',
+        items: { head: 'head-2', faceJewelry: 'jewelry-4', upperBody: 'top-2', handBag: 'bag-2', lowerBody: 'bottom-1', footwear: 'shoes-1' }
+      },
+      {
+        id: 'look-3',
+        title: 'Victorian Garden Tea Party',
+        tagline: 'Anggun, dramatis, dan misterius bagai bangsawan penggemar novel klasik.',
+        vibe: 'Victorian Tea Party',
+        dominantColors: ['#FEF3C7', '#C084FC', '#D97706'],
+        description: 'Fascinator bulu lilac dengan kacamata bros cameo kuningan dan blus kerut berleher tinggi dengan sepatu brogues vintage.',
+        badge: 'Vintage Gem',
+        items: { head: 'head-4', faceJewelry: 'jewelry-3', upperBody: 'top-1', handBag: 'bag-2', lowerBody: 'bottom-4', footwear: 'shoes-3' }
+      },
+      {
+        id: 'look-4',
+        title: 'Diva Extravaganza Flea Market Royalty',
+        tagline: 'Kacamata kucing glitter, kardigan bulu, dan celana jacquard aristokrat.',
+        vibe: 'Diva Extravaganza',
+        dominantColors: ['#EC4899', '#FBCFE8', '#831843'],
+        description: 'Pilihan berani untuk kamu yang tidak takut jadi pusat perhatian. Kardigan bulu retro pastel dan celana floral jacquard mewah dengan boots rose gold.',
+        badge: 'Maximalist Bold',
+        items: { head: 'head-3', faceJewelry: 'jewelry-2', upperBody: 'top-4', handBag: 'bag-1', lowerBody: 'bottom-3', footwear: 'shoes-4' }
+      },
+      {
+        id: 'look-5',
+        title: 'Y2K Glitz & Tulle Thrift Princess',
+        tagline: 'Kilau 2000-an bertemu fantasi busana dongeng masa kecil.',
+        vibe: 'Y2K Glitz',
+        dominantColors: ['#F43F5E', '#E5E7EB', '#FB7185'],
+        description: 'Tas jaring metalik vintage 90s, kalung rantai liontin hati chunky, rok tutu fuchsia mekar, dan boots metalik berkilauan.',
+        badge: 'Retro Y2K',
+        items: { head: 'head-2', faceJewelry: 'jewelry-4', upperBody: 'top-2', handBag: 'bag-4', lowerBody: 'bottom-1', footwear: 'shoes-4' }
+      },
+      {
+        id: 'look-6',
+        title: 'Romantic Sunlit Promenade',
+        tagline: 'Wicker picnic basket bag dan rok kotak lilac untuk jalan sore di taman bunga.',
+        vibe: 'Garden Party',
+        dominantColors: ['#C084FC', '#FBBF24', '#FEF3C7'],
+        description: 'Syal sutra motif bunga vintage diikat anggun, blus ruffle renda krem, tas rotan berhias pita satin, dan rok ruffle motif kotak lilac.',
+        badge: 'Whimsical Daylight',
+        items: { head: 'head-3', faceJewelry: 'jewelry-1', upperBody: 'top-1', handBag: 'bag-3', lowerBody: 'bottom-4', footwear: 'shoes-2' }
+      }
+    ];
+
+    // Helper Functions
+    const formatIDR = (num) => {
+      return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(num);
+    };
+
+    const getRandomItem = (cat) => {
+      const filtered = THRIFT_ITEMS.filter((i) => i.category === cat);
+      return filtered[Math.floor(Math.random() * filtered.length)];
+    };
+
+    const generateRandomOutfit = () => ({
+      head: getRandomItem('head'),
+      faceJewelry: getRandomItem('faceJewelry'),
+      upperBody: getRandomItem('upperBody'),
+      handBag: getRandomItem('handBag'),
+      lowerBody: getRandomItem('lowerBody'),
+      footwear: getRandomItem('footwear')
+    });
+
+    const calculateTotalCost = (outfit) => {
+      if (!outfit) return 0;
+      return Object.values(outfit).reduce((sum, item) => sum + (item ? item.price : 0), 0);
+    };
+
+    const triggerSparkles = () => {
+      if (window.confetti) {
+        window.confetti({
+          particleCount: 60,
+          spread: 70,
+          origin: { y: 0.65 },
+          colors: ['#FF4D8D', '#FF85A1', '#A855F7', '#FBBF24', '#38BDF8']
+        });
+      }
+    };
+
+    // --- MAIN APP COMPONENT ---
+    function App() {
+      const [activeTab, setActiveTab] = useState('builder');
+      const [currentOutfit, setCurrentOutfit] = useState({
+        head: THRIFT_ITEMS.find((i) => i.id === 'head-1'),
+        faceJewelry: THRIFT_ITEMS.find((i) => i.id === 'jewelry-1'),
+        upperBody: THRIFT_ITEMS.find((i) => i.id === 'top-1'),
+        handBag: THRIFT_ITEMS.find((i) => i.id === 'bag-1'),
+        lowerBody: THRIFT_ITEMS.find((i) => i.id === 'bottom-1'),
+        footwear: THRIFT_ITEMS.find((i) => i.id === 'shoes-1')
+      });
+      const [savedOutfits, setSavedOutfits] = useState([]);
+      const [isVaultOpen, setIsVaultOpen] = useState(false);
+      const [selectedCategoryModal, setSelectedCategoryModal] = useState(null);
+      const [searchQuery, setSearchQuery] = useState('');
+      const [activeAestheticFilter, setActiveAestheticFilter] = useState('all');
+      const [copiedText, setCopiedText] = useState(false);
+      const [copiedKeyword, setCopiedKeyword] = useState(null);
+
+      // Load saved on mount
+      useEffect(() => {
+        try {
+          const stored = localStorage.getItem('fancy_thrift_vault');
+          if (stored) setSavedOutfits(JSON.parse(stored));
+        } catch (e) {}
+      }, []);
+
+      const saveToVault = () => {
+        const newEntry = {
+          id: 'vault-' + Date.now(),
+          title: `${currentOutfit.upperBody?.name || 'Top'} & ${currentOutfit.lowerBody?.name || 'Bottom'}`,
+          date: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }),
+          outfit: { ...currentOutfit }
+        };
+        const updated = [newEntry, ...savedOutfits];
+        setSavedOutfits(updated);
+        try { localStorage.setItem('fancy_thrift_vault', JSON.stringify(updated)); } catch(e){}
+        triggerSparkles();
+      };
+
+      const deleteFromVault = (id) => {
+        const updated = savedOutfits.filter((item) => item.id !== id);
+        setSavedOutfits(updated);
+        try { localStorage.setItem('fancy_thrift_vault', JSON.stringify(updated)); } catch(e){}
+      };
+
+      const isCurrentSaved = useMemo(() => {
+        return savedOutfits.some((s) => (
+          s.outfit.head?.id === currentOutfit.head?.id &&
+          s.outfit.faceJewelry?.id === currentOutfit.faceJewelry?.id &&
+          s.outfit.upperBody?.id === currentOutfit.upperBody?.id &&
+          s.outfit.handBag?.id === currentOutfit.handBag?.id &&
+          s.outfit.lowerBody?.id === currentOutfit.lowerBody?.id &&
+          s.outfit.footwear?.id === currentOutfit.footwear?.id
+        ));
+      }, [savedOutfits, currentOutfit]);
+
+      const totalCost = calculateTotalCost(currentOutfit);
+      const retailCost = totalCost * 4.5;
+      const savings = retailCost - totalCost;
+
+      const handleCopyOutfit = () => {
+        const text = `✨ OUTFIT THRIFT FANCY NANCY (Head-to-Toe) ✨\n` +
+          `👑 1. Head & Hair: ${currentOutfit.head?.name} (${currentOutfit.head?.priceRange})\n` +
+          `💎 2. Face & Jewelry: ${currentOutfit.faceJewelry?.name} (${currentOutfit.faceJewelry?.priceRange})\n` +
+          `👗 3. Upper Body: ${currentOutfit.upperBody?.name} (${currentOutfit.upperBody?.priceRange})\n` +
+          `👜 4. Hands & Bag: ${currentOutfit.handBag?.name} (${currentOutfit.handBag?.priceRange})\n` +
+          `💃 5. Lower Body: ${currentOutfit.lowerBody?.name} (${currentOutfit.lowerBody?.priceRange})\n` +
+          `👠 6. Footwear: ${currentOutfit.footwear?.name} (${currentOutfit.footwear?.priceRange})\n` +
+          `-----------------------------------------\n` +
+          `💰 Total Estimasi Thrift: ${formatIDR(totalCost)}\n` +
+          `🎀 Dibuat dengan Très Chic Thrifter App`;
+        navigator.clipboard.writeText(text);
+        setCopiedText(true);
+        setTimeout(() => setCopiedText(false), 2000);
+      };
+
+      const handleApplyLookbook = (look) => {
+        const getItem = (id) => THRIFT_ITEMS.find((i) => i.id === id);
+        setCurrentOutfit({
+          head: getItem(look.items.head),
+          faceJewelry: getItem(look.items.faceJewelry),
+          upperBody: getItem(look.items.upperBody),
+          handBag: getItem(look.items.handBag),
+          lowerBody: getItem(look.items.lowerBody),
+          footwear: getItem(look.items.footwear)
+        });
+        setActiveTab('builder');
+        triggerSparkles();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      };
+
+      return (
+        <div className="min-h-screen flex flex-col">
+          
+          {/* NAVBAR */}
+          <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-rose-200/80 shadow-sm">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="flex items-center justify-between h-20">
+                <div onClick={() => setActiveTab('builder')} className="flex items-center gap-3 cursor-pointer group">
+                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-pink-500 via-rose-400 to-amber-300 flex items-center justify-center shadow-lg text-white text-2xl group-hover:scale-105 transition-transform">
+                    🎀
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="font-serif text-2xl sm:text-3xl font-black text-slate-900 group-hover:text-pink-600 transition-colors">
+                        Très Chic
+                      </span>
+                      <span className="text-xs px-2 py-0.5 rounded-full bg-rose-100 text-pink-600 font-semibold border border-rose-200 hidden sm:inline-block">
+                        Fancy Nancy Style
+                      </span>
+                    </div>
+                    <p className="text-xs text-rose-500 font-medium">Head-to-Toe Thrift & Preloved Outfit Guide</p>
+                  </div>
+                </div>
+
+                <nav className="hidden md:flex items-center gap-1.5 p-1 bg-rose-50/70 border border-rose-200/60 rounded-2xl">
+                  <button onClick={() => setActiveTab('builder')} className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all ${activeTab === 'builder' ? 'bg-white text-pink-600 shadow-sm border border-rose-200' : 'text-slate-600 hover:text-slate-900'}`}>
+                    👗 Outfit Builder
+                  </button>
+                  <button onClick={() => setActiveTab('lookbooks')} className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all ${activeTab === 'lookbooks' ? 'bg-white text-pink-600 shadow-sm border border-rose-200' : 'text-slate-600 hover:text-slate-900'}`}>
+                    📖 Curated Looks
+                  </button>
+                  <button onClick={() => setActiveTab('cheatsheet')} className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all ${activeTab === 'cheatsheet' ? 'bg-white text-pink-600 shadow-sm border border-rose-200' : 'text-slate-600 hover:text-slate-900'}`}>
+                    🧭 Thrift Cheatsheet
+                  </button>
+                </nav>
+
+                <div className="flex items-center gap-2 sm:gap-3">
+                  <button onClick={() => { setCurrentOutfit(generateRandomOutfit()); triggerSparkles(); }} className="flex items-center gap-1.5 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-gradient-to-r from-amber-400 via-rose-400 to-pink-500 text-white font-bold text-xs sm:text-sm shadow-md hover:scale-105 active:scale-95 transition-all">
+                    🎲 <span>Thrift Gacha</span>
+                  </button>
+                  <button onClick={() => setIsVaultOpen(true)} className="relative p-2.5 rounded-xl border border-rose-200 bg-white hover:bg-rose-50 text-slate-700 transition-all shadow-sm">
+                    💖
+                    {savedOutfits.length > 0 && (
+                      <span className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-pink-500 text-white text-[11px] font-bold flex items-center justify-center border-2 border-white shadow-sm">
+                        {savedOutfits.length}
+                      </span>
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              {/* Mobile Bar */}
+              <div className="flex md:hidden items-center justify-around py-2.5 border-t border-rose-100 text-xs font-semibold text-slate-600">
+                <button onClick={() => setActiveTab('builder')} className={`px-3 py-1.5 rounded-lg ${activeTab === 'builder' ? 'text-pink-600 font-bold bg-rose-50' : ''}`}>
+                  👗 Builder
+                </button>
+                <button onClick={() => setActiveTab('lookbooks')} className={`px-3 py-1.5 rounded-lg ${activeTab === 'lookbooks' ? 'text-pink-600 font-bold bg-rose-50' : ''}`}>
+                  📖 Lookbooks
+                </button>
+                <button onClick={() => setActiveTab('cheatsheet')} className={`px-3 py-1.5 rounded-lg ${activeTab === 'cheatsheet' ? 'text-pink-600 font-bold bg-rose-50' : ''}`}>
+                  🧭 Tips & Keywords
+                </button>
+              </div>
+            </div>
+          </header>
+
+          {/* MAIN BODY */}
+          <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
+            
+            {/* TAB 1: BUILDER */}
+            {activeTab === 'builder' && (
+              <div className="space-y-8">
+                <div className="text-center max-w-3xl mx-auto pt-2 pb-4">
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-100 text-pink-600 text-xs font-bold mb-3 border border-rose-200">
+                    ✨ Interactive Head-to-Toe Styling Engine
+                  </div>
+                  <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight">
+                    Outfit Thrift <span className="text-pink-500 italic">Fancy Nancy</span>
+                  </h1>
+                  <p className="mt-2 text-slate-600 text-sm sm:text-base max-w-xl mx-auto">
+                    Kombinasi busana preloved eksentrik, berkelas, dan penuh pesona dari atas kepala sampai ujung kaki. Temukan inspirasi & kata kunci berburu di pasar loak!
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                  
+                  {/* Left Column: Mannequin Stack Preview */}
+                  <div className="lg:col-span-5 lg:sticky lg:top-24 bg-white rounded-3xl p-6 border border-rose-200 shadow-fancy space-y-5">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h3 className="font-serif font-black text-xl text-slate-900">Head-to-Toe Preview</h3>
+                        <p className="text-xs text-rose-500 font-medium">Dari Ujung Kepala Hingga Kaki</p>
+                      </div>
+                      <div className="flex items-center gap-1.5 p-1.5 bg-rose-50 rounded-full border border-rose-100">
+                        {THRIFT_CATEGORIES.map((c) => (
+                          <span key={c.id} className="w-3.5 h-3.5 rounded-full border border-white shadow-sm" style={{ backgroundColor: currentOutfit[c.id]?.color || '#FF85A1' }} />
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* 6 Layer Grid View */}
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+                      {THRIFT_CATEGORIES.map((cat, idx) => {
+                        const item = currentOutfit[cat.id];
+                        return (
+                          <div key={cat.id} onClick={() => setSelectedCategoryModal(cat)} className="group rounded-2xl overflow-hidden bg-rose-50/50 border border-rose-200 hover:border-pink-500 cursor-pointer transition-all hover:shadow-md flex flex-col">
+                            <div className="relative h-28 w-full overflow-hidden bg-slate-100">
+                              <img src={item?.image} alt={item?.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                              <div className="absolute top-1.5 left-1.5 px-1.5 py-0.5 rounded bg-black/60 text-[10px] font-bold text-white">
+                                #{idx + 1}
+                              </div>
+                            </div>
+                            <div className="p-2 flex-1 flex flex-col justify-between">
+                              <span className="text-[10px] font-bold text-rose-400 uppercase truncate">{cat.label.replace(/^\d+\.\s*/, '')}</span>
+                              <p className="font-serif font-bold text-xs text-slate-800 line-clamp-1">{item?.name}</p>
+                              <p className="text-[11px] font-bold text-pink-600 mt-1">{formatIDR(item?.price || 0)}</p>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    {/* Budget Calculation */}
+                    <div className="p-4 rounded-2xl bg-gradient-to-r from-rose-50 via-amber-50/40 to-pink-50 border border-rose-200">
+                      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+                        <div>
+                          <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Estimasi Thrift (6 Items)</span>
+                          <div className="flex items-baseline gap-2 mt-0.5">
+                            <span className="font-serif text-2xl sm:text-3xl font-black text-pink-600">{formatIDR(totalCost)}</span>
+                            <span className="text-xs line-through text-slate-400">Retail: {formatIDR(retailCost)}</span>
+                          </div>
+                        </div>
+                        <div className="px-3 py-1 rounded-xl bg-emerald-100 text-emerald-800 text-xs font-bold border border-emerald-200">
+                          Hemat {formatIDR(savings)}!
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="flex flex-wrap items-center gap-2">
+                      <button onClick={saveToVault} className={`flex-1 py-3 px-4 rounded-xl font-bold text-sm transition-all shadow-sm ${isCurrentSaved ? 'bg-emerald-500 text-white' : 'bg-pink-500 text-white hover:bg-pink-600 shadow-fancy'}`}>
+                        {isCurrentSaved ? '✓ Tersimpan di Vault' : '💖 Simpan ke Vault'}
+                      </button>
+                      <button onClick={handleCopyOutfit} className="flex-1 py-3 px-4 rounded-xl bg-white border border-rose-200 text-slate-700 hover:bg-rose-50 font-bold text-sm transition-all shadow-sm">
+                        {copiedText ? '✓ Tersalin!' : '📋 Bagikan Outfit'}
+                      </button>
+                      <button onClick={() => { setCurrentOutfit(generateRandomOutfit()); triggerSparkles(); }} className="p-3 rounded-xl bg-amber-400 hover:bg-amber-500 text-amber-950 font-bold transition-all shadow-sm" title="Acak Semua">
+                        🎲
+                      </button>
+                    </div>
+
+                  </div>
+
+                  {/* Right Column: 6 Layer Slots List */}
+                  <div className="lg:col-span-7 space-y-3.5">
+                    <div className="flex items-center justify-between pb-1">
+                      <h2 className="font-serif font-bold text-lg text-slate-900">Lapisan Busana Terpasang (6 Layers)</h2>
+                      <button onClick={() => setCurrentOutfit(DEFAULT_OUTFIT)} className="text-xs font-semibold text-rose-500 hover:underline">
+                        Reset Default
+                      </button>
+                    </div>
+
+                    {THRIFT_CATEGORIES.map((cat) => {
+                      const item = currentOutfit[cat.id];
+                      return (
+                        <div key={cat.id} className="bg-white rounded-2xl p-4 border border-rose-200/80 shadow-sm hover:shadow-md transition-all relative overflow-hidden group">
+                          <div className="absolute left-0 top-0 bottom-0 w-1.5" style={{ backgroundColor: item?.color || '#FF85A1' }} />
+                          
+                          <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+                            <div className="flex items-center gap-3.5 flex-1 min-w-0">
+                              <div className="relative w-16 h-16 rounded-xl overflow-hidden bg-rose-50 border border-rose-100 shrink-0">
+                                <img src={item?.image} alt={item?.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                              </div>
+                              <div className="min-w-0 flex-1">
+                                <span className="text-[11px] font-bold uppercase tracking-wider text-rose-500 bg-rose-50 px-2 py-0.5 rounded border border-rose-100">
+                                  {cat.label}
+                                </span>
+                                <h4 className="font-serif font-bold text-slate-900 text-sm sm:text-base leading-tight mt-1 truncate">
+                                  {item?.name}
+                                </h4>
+                                <p className="text-xs font-bold text-pink-600 mt-0.5">
+                                  Est. Thrift: {item?.priceRange} ({formatIDR(item?.price || 0)})
+                                </p>
+                              </div>
+                            </div>
+
+                            <button onClick={() => setSelectedCategoryModal(cat)} className="px-4 py-2 rounded-xl bg-gradient-to-r from-rose-500 to-pink-500 text-white text-xs font-bold shadow-sm hover:scale-105 active:scale-95 transition-all">
+                              🔄 Ganti Item
+                            </button>
+                          </div>
+
+                          <div className="mt-3 pt-2.5 border-t border-rose-100/70 text-xs text-slate-500 space-y-1">
+                            <p><strong className="text-slate-700">🔍 Keywords:</strong> <span className="font-mono bg-rose-50 px-1.5 py-0.5 rounded text-rose-800">{item?.thriftSearchKeywords}</span></p>
+                            <p><strong className="text-slate-700">🧵 Tips Bahan:</strong> {item?.materialTip}</p>
+                            <p className="font-fancy text-rose-500 text-base italic">✨ Nancy says: "{item?.fancyNancyFact}"</p>
+                          </div>
+
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                </div>
+              </div>
+            )}
+
+            {/* TAB 2: CURATED LOOKBOOKS */}
+            {activeTab === 'lookbooks' && (
+              <div className="space-y-8">
+                <div className="text-center max-w-2xl mx-auto">
+                  <div className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-purple-100 text-purple-700 text-xs font-bold mb-3 border border-purple-200">
+                    📖 Curated Head-to-Toe Lookbooks
+                  </div>
+                  <h2 className="font-serif text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
+                    Inspirasi Gaya <span className="text-pink-500 italic">Très Magnifique</span>
+                  </h2>
+                  <p className="mt-2 text-slate-600 text-sm sm:text-base">
+                    Pilihan padu-padan outfit thrift lengkap dari para kurator busana eksentrik. Klik "Gunakan di Builder" untuk memodifikasi!
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {CURATED_LOOKBOOKS.map((look) => {
+                    const topItem = THRIFT_ITEMS.find((i) => i.id === look.items.upperBody);
+                    const headItem = THRIFT_ITEMS.find((i) => i.id === look.items.head);
+                    const itemsList = Object.values(look.items).map((id) => THRIFT_ITEMS.find((i) => i.id === id)).filter(Boolean);
+                    const cost = itemsList.reduce((acc, i) => acc + i.price, 0);
+
+                    return (
+                      <div key={look.id} className="bg-white rounded-3xl overflow-hidden border border-rose-200 shadow-sm hover:shadow-xl transition-all flex flex-col justify-between group">
+                        <div>
+                          <div className="relative h-56 bg-slate-100 overflow-hidden">
+                            <img src={topItem?.image || headItem?.image} alt={look.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                            <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-pink-500/90 text-white text-xs font-bold">
+                              {look.badge}
+                            </div>
+                            <div className="absolute top-3 right-3 flex items-center gap-1 p-1 bg-black/40 rounded-full">
+                              {look.dominantColors.map((c, i) => (
+                                <span key={i} className="w-3 h-3 rounded-full border border-white" style={{ backgroundColor: c }} />
+                              ))}
+                            </div>
+                            <div className="absolute bottom-3 left-3 right-3 text-white">
+                              <span className="text-[11px] font-semibold uppercase text-rose-300">{look.vibe}</span>
+                              <h3 className="font-serif text-lg font-bold leading-tight">{look.title}</h3>
+                            </div>
+                          </div>
+
+                          <div className="p-5">
+                            <p className="text-xs text-rose-500 font-fancy text-base mb-2">"{look.tagline}"</p>
+                            <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed mb-4">{look.description}</p>
+                            
+                            <div className="border-t border-b border-rose-100 py-3 mb-4">
+                              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-2">Rincian 6 Lapisan:</span>
+                              <div className="grid grid-cols-6 gap-1.5">
+                                {itemsList.map((item, idx) => (
+                                  <div key={idx} className="h-10 rounded-lg overflow-hidden bg-slate-100 border border-rose-100" title={item.name}>
+                                    <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+
+                            <div className="flex items-center justify-between text-xs font-semibold">
+                              <span className="text-slate-500">Estimasi Thrift:</span>
+                              <span className="font-serif text-base font-bold text-pink-600">{formatIDR(cost)}</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="p-5 pt-0">
+                          <button onClick={() => handleApplyLookbook(look)} className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-rose-500 via-pink-500 to-purple-600 text-white font-bold text-xs shadow-md hover:scale-[1.02] transition-all flex items-center justify-center gap-1.5">
+                            <span>Gunakan di Outfit Builder</span> ➔
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {/* TAB 3: THRIFT CHEATSHEET & TIPS */}
+            {activeTab === 'cheatsheet' && (
+              <div className="space-y-8 max-w-5xl mx-auto">
+                <div className="text-center max-w-2xl mx-auto">
+                  <div className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-amber-100 text-amber-800 text-xs font-bold mb-3 border border-amber-200">
+                    🧭 Thrift Hunting Guide & Keyword Engine
+                  </div>
+                  <h2 className="font-serif text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
+                    Panduan Berburu Thrift <span className="text-pink-500 italic">Fancy Nancy</span>
+                  </h2>
+                  <p className="mt-2 text-slate-600 text-sm sm:text-base">
+                    Kamus kata kunci pencarian, lokasi pasar loak terbaik, dan tips higienis mencuci pakaian vintage agar siap tampil memukau!
+                  </p>
+                </div>
+
+                {/* Spot Flea Market */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                  <div className="bg-white p-5 rounded-3xl border border-rose-200/80 shadow-sm">
+                    <span className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-rose-100 text-pink-600 inline-block mb-3">Surga Vintage Nusantara</span>
+                    <h3 className="font-serif font-bold text-lg text-slate-900">📍 Pasar Senen (Blok III, Jakarta)</h3>
+                    <p className="text-xs text-slate-600 mt-2 leading-relaxed">
+                      Pusat karung thrift impor terbesar. Kunjungi lantai 3 untuk berburu blus renda brokat, mantel bulu, dan tas manik pesta.
+                    </p>
+                    <div className="mt-4 pt-3 border-t border-rose-100 text-[11px] text-amber-700 bg-amber-50/70 p-2.5 rounded-xl">
+                      <strong>💡 Pro-Tip:</strong> Datang pagi hari (jam 09.00 - 11.00) saat bal baru dibuka.
+                    </div>
+                  </div>
+
+                  <div className="bg-white p-5 rounded-3xl border border-rose-200/80 shadow-sm">
+                    <span className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-purple-100 text-purple-600 inline-block mb-3">Gudang Rajut & Rok</span>
+                    <h3 className="font-serif font-bold text-lg text-slate-900">📍 Pasar Gedebage (Bandung)</h3>
+                    <p className="text-xs text-slate-600 mt-2 leading-relaxed">
+                      Banyak ragam rok plisket mekar, cardigan rajut pastel bordir, serta jaket velvet dengan harga mulai Rp 15.000.
+                    </p>
+                    <div className="mt-4 pt-3 border-t border-rose-100 text-[11px] text-amber-700 bg-amber-50/70 p-2.5 rounded-xl">
+                      <strong>💡 Pro-Tip:</strong> Siapkan masker dan tawar-menawar dengan ramah.
+                    </div>
+                  </div>
+
+                  <div className="bg-white p-5 rounded-3xl border border-rose-200/80 shadow-sm">
+                    <span className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 inline-block mb-3">Thrifting Digital 24 Jam</span>
+                    <h3 className="font-serif font-bold text-lg text-slate-900">📍 Carousell & Shopee Live</h3>
+                    <p className="text-xs text-slate-600 mt-2 leading-relaxed">
+                      Sangat praktis untuk mencari kata kunci spesifik seperti "tapestry corset" atau "fascinator hat" dari seller terkurasi.
+                    </p>
+                    <div className="mt-4 pt-3 border-t border-rose-100 text-[11px] text-amber-700 bg-amber-50/70 p-2.5 rounded-xl">
+                      <strong>💡 Pro-Tip:</strong> Gunakan filter "Kondisi: Bekas" dan minta video resleting & ketiak.
+                    </div>
+                  </div>
+                </div>
+
+                {/* Hygiene Checklist */}
+                <div className="bg-gradient-to-br from-rose-50 via-purple-50 to-pink-50 rounded-3xl p-6 sm:p-8 border border-rose-200 space-y-4">
+                  <h3 className="font-serif text-xl sm:text-2xl font-bold text-slate-900">Protokol Higienis & Perawatan Baju Thrift</h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+                    <div className="bg-white/80 p-4 rounded-2xl border border-rose-100">
+                      <h4 className="font-bold text-rose-600 text-sm mb-1">1. Rendam Antiseptik / Cuka</h4>
+                      <p className="text-slate-600">Rendam baju thrift 30 menit dengan air hangat dicampur 3 sendok cuka putih untuk membunuh kuman & tungau.</p>
+                    </div>
+                    <div className="bg-white/80 p-4 rounded-2xl border border-rose-100">
+                      <h4 className="font-bold text-purple-600 text-sm mb-1">2. Perawatan Renda & Tulle</h4>
+                      <p className="text-slate-600">Jangan pakai mesin cuci! Cukup kucek lembut dengan detergen cair lembut/sampo bayi dan keringkan di tempat teduh.</p>
+                    </div>
+                    <div className="bg-white/80 p-4 rounded-2xl border border-rose-100">
+                      <h4 className="font-bold text-amber-600 text-sm mb-1">3. Uap Steamer (Bukan Setrika)</h4>
+                      <p className="text-slate-600">Gunakan steamer uap agar lipatan plisket metalik dan bahan velvet tidak gosong atau gepeng.</p>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            )}
+
+          </main>
+
+          {/* ITEM SELECTOR MODAL */}
+          {selectedCategoryModal && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+              <div className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col border border-rose-200 overflow-hidden">
+                <div className="p-6 bg-gradient-to-r from-rose-50 via-pink-50 to-amber-50/50 border-b border-rose-100 flex items-center justify-between">
+                  <div>
+                    <h3 className="font-serif text-xl sm:text-2xl font-bold text-slate-900">Pilih: {selectedCategoryModal.label}</h3>
+                    <p className="text-xs text-slate-500 mt-0.5">{selectedCategoryModal.desc}</p>
+                  </div>
+                  <button onClick={() => setSelectedCategoryModal(null)} className="p-2 rounded-full hover:bg-white text-slate-400 hover:text-slate-700 text-xl font-bold">✕</button>
+                </div>
+
+                <div className="p-4 sm:p-6 overflow-y-auto space-y-4 flex-1">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {THRIFT_ITEMS.filter((i) => i.category === selectedCategoryModal.id).map((item) => {
+                      const isSelected = currentOutfit[selectedCategoryModal.id]?.id === item.id;
+                      return (
+                        <div key={item.id} onClick={() => { setCurrentOutfit({ ...currentOutfit, [selectedCategoryModal.id]: item }); setSelectedCategoryModal(null); }} className={`rounded-2xl p-3 border-2 cursor-pointer transition-all ${isSelected ? 'border-pink-500 bg-rose-50/50 shadow-fancy' : 'border-rose-100 hover:border-rose-300 bg-white'}`}>
+                          <div className="relative h-44 rounded-xl overflow-hidden mb-3 bg-slate-100">
+                            <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                            <div className="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-black/60 text-[11px] font-semibold text-white">{item.aesthetic}</div>
+                            {isSelected && <div className="absolute top-2 right-2 w-7 h-7 rounded-full bg-pink-500 text-white flex items-center justify-center font-bold">✓</div>}
+                          </div>
+                          <h4 className="font-serif font-bold text-slate-900 text-sm leading-snug">{item.name}</h4>
+                          <p className="text-xs font-bold text-pink-600 mt-1">Est. Thrift: {item.priceRange} ({formatIDR(item.price)})</p>
+                          <p className="text-[11px] italic text-rose-500 mt-1 font-fancy text-base">"{item.fancyNancyFact}"</p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div className="p-4 bg-slate-50 border-t border-rose-100 text-right">
+                  <button onClick={() => setSelectedCategoryModal(null)} className="px-5 py-2 rounded-xl text-sm font-semibold bg-white border border-slate-200 text-slate-700 hover:bg-slate-100">Tutup</button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* VAULT MODAL */}
+          {isVaultOpen && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+              <div className="bg-white rounded-3xl shadow-2xl max-w-3xl w-full max-h-[90vh] flex flex-col border border-rose-200 overflow-hidden">
+                <div className="p-6 bg-gradient-to-r from-rose-50 via-pink-50 to-purple-50 border-b border-rose-100 flex items-center justify-between">
+                  <div>
+                    <h3 className="font-serif text-xl sm:text-2xl font-bold text-slate-900">💖 My Fancy Thrift Vault</h3>
+                    <p className="text-xs text-rose-500 font-medium">{savedOutfits.length} Outfit Tersimpan</p>
+                  </div>
+                  <button onClick={() => setIsVaultOpen(false)} className="p-2 rounded-full hover:bg-white text-slate-400 hover:text-slate-700 text-xl font-bold">✕</button>
+                </div>
+
+                <div className="p-6 overflow-y-auto space-y-4 flex-1">
+                  {savedOutfits.length === 0 ? (
+                    <div className="text-center py-16 text-slate-400 space-y-2">
+                      <p className="text-4xl">🎀</p>
+                      <h4 className="font-serif font-bold text-lg text-slate-700">Belum Ada Outfit Tersimpan</h4>
+                      <p className="text-xs text-slate-500">Klik "Simpan ke Vault" di builder untuk menyimpan padu-padan favoritmu!</p>
+                    </div>
+                  ) : (
+                    savedOutfits.map((s) => (
+                      <div key={s.id} className="p-4 rounded-2xl border border-rose-100 bg-rose-50/20 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                        <div className="flex items-center gap-3">
+                          <div className="flex -space-x-3 overflow-hidden">
+                            {[s.outfit.head, s.outfit.upperBody, s.outfit.lowerBody, s.outfit.footwear].filter(Boolean).map((it, i) => (
+                              <img key={i} src={it.image} alt={it.name} className="inline-block h-12 w-12 rounded-full ring-2 ring-white object-cover shadow-sm" />
+                            ))}
+                          </div>
+                          <div>
+                            <span className="text-[11px] text-slate-400">{s.date}</span>
+                            <h4 className="font-serif font-bold text-slate-900 text-sm">{s.title}</h4>
+                            <p className="text-xs font-bold text-pink-600">Total: {formatIDR(calculateTotalCost(s.outfit))}</p>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                          <button onClick={() => { setCurrentOutfit(s.outfit); setIsVaultOpen(false); setActiveTab('builder'); }} className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-rose-500 to-pink-500 text-white text-xs font-bold shadow-sm">
+                            Pakai di Builder ➔
+                          </button>
+                          <button onClick={() => deleteFromVault(s.id)} className="p-2 rounded-xl border border-rose-200 text-slate-400 hover:text-rose-600 hover:bg-rose-100">
+                            🗑️
+                          </button>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+
+                <div className="p-4 bg-slate-50 border-t border-rose-100 text-right">
+                  <button onClick={() => setIsVaultOpen(false)} className="px-5 py-2 rounded-xl text-sm font-semibold bg-white border border-slate-200 text-slate-700 hover:bg-slate-100">Tutup</button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* FOOTER */}
+          <footer className="bg-white border-t border-rose-200/80 py-8 px-4 mt-16 text-center">
+            <div className="max-w-4xl mx-auto space-y-2">
+              <div className="flex items-center justify-center gap-2 text-xl font-serif font-black text-slate-800">
+                <span>✨ Très Chic Thrifter 🎀</span>
+              </div>
+              <p className="font-fancy text-lg text-rose-500 italic">
+                "Anyone can be ordinary, but it takes courage, creativity, and a touch of vintage flair to be fancy!"
+              </p>
+              <p className="text-xs text-slate-400">
+                Aplikasi Referensi Outfit Thrift Fancy Nancy dari Atas Kepala Sampai Ujung Kaki
+              </p>
+            </div>
+          </footer>
+
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
